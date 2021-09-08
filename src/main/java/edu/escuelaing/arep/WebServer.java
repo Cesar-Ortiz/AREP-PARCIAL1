@@ -62,8 +62,13 @@ public class WebServer {
             String uriStr= request.get(0).split(" ")[1];
             System.out.println("uriStr: "+uriStr);
             URI resourceURI = new URI(uriStr);
-            outputLine = getResource(resourceURI);
-            out.println(computeDefaultResponse());
+            if(uriStr.equals("/clima")){
+                out.println(computeDefaultResponse());
+            }
+            else{
+                outputLine = getResource(resourceURI);
+                out.println(outputLine);
+            }
         }
         catch (Exception e){
             out.println(computeDefaultResponse());
