@@ -41,6 +41,7 @@ public class WebServer {
     }
 
     public void serveConnection(Socket clientSocket) throws IOException, URISyntaxException {
+        String json;
         OutputStream outputStream;
         outputStream = clientSocket.getOutputStream();
         PrintWriter out = new PrintWriter(outputStream, true);
@@ -66,7 +67,8 @@ public class WebServer {
                 out.println(computeDefaultResponse());
             }
             else{
-                outputLine = getResource(resourceURI);
+                json = getResource(resourceURI);
+                outputLine = html(json);
                 out.println(outputLine);
             }
         }
@@ -76,6 +78,23 @@ public class WebServer {
         out.close();
         in.close();
         clientSocket.close();
+    }
+
+    public String html(String json){
+        String outputLine = "HTTP/1.1 200 OK\r\n"
+                + "Content-Type: text/html\r\n"
+                + "\r\n"
+                + "<!DOCTYPE html>"
+                + "<html>"
+                + "<head>"
+                + "<meta charset=\"UTF-8\">"
+                + "<title>Title of the document</title>\n"
+                + "</head>"
+                + "<body>"
+                + json
+                + "</body>"
+                + "</html>";
+        return outputLine;
     }
 
     public String getResource(URI resourceURI) throws IOException {
@@ -88,6 +107,7 @@ public class WebServer {
         String responseStr = "none";
         System.out.println("extención: "+extent);
         URL obj = new URL("https://api.openweathermap.org/data/2.5/weather?q=London&appid=8805fcd7d0439565c8dda8eb5eedbbad");
+        System.out.println("objeto "+obj);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("User-Agent", USER_AGENT);
