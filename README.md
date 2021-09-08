@@ -1,4 +1,4 @@
 # Parcial
 
 despliegue
-https://parcialarep111.herokuapp.com/
+https://parcialarep111.herokuapp.com/clima
